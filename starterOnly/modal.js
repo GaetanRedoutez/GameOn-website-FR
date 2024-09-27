@@ -41,8 +41,14 @@ const validFormSubmit = (formDataObject) => {
     !formDataObject.firstName.value ||
     formDataObject.firstName.value.length < 2
   ) {
+    formDataObject.firstName.parentElement.setAttribute(
+      "data-error",
+      "Veuillez entrer 2 caractères ou plus pour le champ du prénom."
+    );
+    formDataObject.firstName.parentElement.dataset.errorVisible = "true";
     formDataIsValid = false;
   } else {
+    formDataObject.firstName.parentElement.dataset.errorVisible = "false";
   }
 
   // (2) Nom de famille : minimum de 2 caractères
@@ -50,21 +56,39 @@ const validFormSubmit = (formDataObject) => {
     !formDataObject.lastName.value ||
     formDataObject.lastName.value.length < 2
   ) {
+    formDataObject.lastName.parentElement.setAttribute(
+      "data-error",
+      "Veuillez entrer 2 caractères ou plus pour le champ du nom."
+    );
+    formDataObject.lastName.parentElement.dataset.errorVisible = "true";
     formDataIsValid = false;
   } else {
+    formDataObject.lastName.parentElement.dataset.errorVisible = "false";
   }
 
   // (3) Adresse électronique : vérification de la validité
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailPattern.test(formDataObject.email.value)) {
+    formDataObject.email.parentElement.setAttribute(
+      "data-error",
+      "Vous devez saisir un email valide."
+    );
+    formDataObject.email.parentElement.dataset.errorVisible = "true";
     formDataIsValid = false;
   } else {
+    formDataObject.email.parentElement.dataset.errorVisible = "false";
   }
 
   // (4) Dates de naissance
   if (!formDataObject.birthdate.value) {
+    formDataObject.birthdate.parentElement.setAttribute(
+      "data-error",
+      "Vous devez entrer votre date de naissance."
+    );
+    formDataObject.birthdate.parentElement.dataset.errorVisible = "true";
     formDataIsValid = false;
   } else {
+    formDataObject.birthdate.parentElement.dataset.errorVisible = "false";
   }
 
   // (5) Nombre de concours : doit être un nombre
@@ -73,8 +97,14 @@ const validFormSubmit = (formDataObject) => {
     formDataObject.quantity.value < 0 ||
     isNaN(formDataObject.quantity.value)
   ) {
+    formDataObject.quantity.parentElement.setAttribute(
+      "data-error",
+      "Vous devez saisir un nombre."
+    );
+    formDataObject.quantity.parentElement.dataset.errorVisible = "true";
     formDataIsValid = false;
   } else {
+    formDataObject.quantity.parentElement.dataset.errorVisible = "false";
   }
 
   // (6) Bouton radio sélectionné
@@ -82,14 +112,26 @@ const validFormSubmit = (formDataObject) => {
     (location) => location.checked
   );
   if (!selectedLocation) {
+    formDataObject.location6.parentElement.setAttribute(
+      "data-error",
+      "Vous devez choisir une option."
+    );
+    formDataObject.location6.parentElement.dataset.errorVisible = "true";
     formDataIsValid = false;
   } else {
+    formDataObject.location6.parentElement.dataset.errorVisible = "false";
   }
 
   // (7) Vérifier si la case des conditions générales est cochée
   if (!formDataObject.termsAccepted.checked) {
+    formDataObject.termsAccepted.parentElement.setAttribute(
+      "data-error",
+      "Vous devez vérifier que vous acceptez les termes et conditions."
+    );
+    formDataObject.termsAccepted.parentElement.dataset.errorVisible = "true";
     formDataIsValid = false;
   } else {
+    formDataObject.termsAccepted.parentElement.dataset.errorVisible = "false";
   }
 
   return formDataIsValid;
@@ -103,6 +145,7 @@ const validate = () => {
     birthdate: document.querySelector("#birthdate"),
     quantity: document.querySelector("#quantity"),
     locations: document.querySelectorAll('input[name="location"]'),
+    location6: document.querySelector("#location6"),
     termsAccepted: document.querySelector("#checkbox1"),
     wantsUpdates: document.querySelector("#checkbox2"),
   };
