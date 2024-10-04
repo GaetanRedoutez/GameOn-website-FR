@@ -19,120 +19,156 @@ modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
 // launch modal form
 function launchModal() {
+  form.style.display = "initial";
   modalbg.style.display = "block";
 }
 
-/**
- * Close modal function
- */
+// Close modal
 const closeModal = () => {
   modalbg.style.display = "none";
+  removeAllErrors();
 };
 
 // Close modal event
 modalCloseBtn.addEventListener("click", closeModal);
 
-// Fonction de validation du formulaire
+// Fonction pour gérer l'affichage des erreurs
+const setError = (element, message) => {
+  element.parentElement.setAttribute("data-error", message);
+  element.parentElement.dataset.errorVisible = "true";
+};
+
+// Fonction pour masquer les erreurs
+const clearError = (element) => {
+  element.parentElement.removeAttribute("data-error");
+  element.parentElement.dataset.errorVisible = "false";
+};
+
+// Fonction pour supprimer tous les attributs data-error et data-error-visible
+const removeAllErrors = () => {
+  const elementsWithError = document.querySelectorAll("[data-error]");
+
+  elementsWithError.forEach((element) => {
+    element.removeAttribute("data-error");
+    element.dataset.errorVisible = "false";
+  });
+};
+
+// (1) Validation du prénom
+const validateFirstName = (firstName) => {
+  if (!firstName.value || firstName.value.length < 2) {
+    setError(
+      firstName,
+      "Veuillez entrer 2 caractères ou plus pour le champ du prénom."
+    );
+    return false;
+  } else {
+    clearError(firstName);
+    return true;
+  }
+};
+
+// (2) Validation du nom de famille
+const validateLastName = (lastName) => {
+  if (!lastName.value || lastName.value.length < 2) {
+    setError(
+      lastName,
+      "Veuillez entrer 2 caractères ou plus pour le champ du nom."
+    );
+    return false;
+  } else {
+    clearError(lastName);
+    return true;
+  }
+};
+
+// (3) Validation de l'adresse email
+const validateEmail = (email) => {
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(email.value)) {
+    setError(email, "Vous devez saisir un email valide.");
+    return false;
+  } else {
+    clearError(email);
+    return true;
+  }
+};
+
+// (4) Validation de la date de naissance
+const validateBirthdate = (birthdate) => {
+  if (!birthdate.value) {
+    setError(birthdate, "Vous devez entrer votre date de naissance.");
+    return false;
+  } else {
+    clearError(birthdate);
+    return true;
+  }
+};
+
+// (5) Validation du nombre de concours
+const validateQuantity = (quantity) => {
+  if (!quantity.value || quantity.value < 0 || isNaN(quantity.value)) {
+    setError(quantity, "Vous devez saisir un nombre.");
+    return false;
+  } else {
+    clearError(quantity);
+    return true;
+  }
+};
+
+// (6) Validation du choix d'une localisation
+const validateLocation = (locations, location6) => {
+  const selectedLocation = Array.from(locations).some(
+    (location) => location.checked
+  );
+
+  if (!selectedLocation && location6) {
+    setError(location6, "Vous devez choisir une option.");
+    return false;
+  } else if (location6) {
+    clearError(location6);
+    return true;
+  }
+};
+
+// (7) Validation de l'acceptation des conditions générales
+const validateTermsAccepted = (termsAccepted) => {
+  if (!termsAccepted.checked) {
+    setError(
+      termsAccepted,
+      "Vous devez vérifier que vous acceptez les termes et conditions."
+    );
+    return false;
+  } else {
+    clearError(termsAccepted);
+    return true;
+  }
+};
+
+// Fonction principale de validation du formulaire
 const validFormSubmit = (formDataObject) => {
   let formDataIsValid = true;
 
-  // (1) Prénom : minimum de 2 caractères
-  if (
-    !formDataObject.firstName.value ||
-    formDataObject.firstName.value.length < 2
-  ) {
-    formDataObject.firstName.parentElement.setAttribute(
-      "data-error",
-      "Veuillez entrer 2 caractères ou plus pour le champ du prénom."
-    );
-    formDataObject.firstName.parentElement.dataset.errorVisible = "true";
-    formDataIsValid = false;
-  } else {
-    formDataObject.firstName.parentElement.dataset.errorVisible = "false";
-  }
+  formDataIsValid =
+    validateFirstName(formDataObject.firstName) && formDataIsValid;
 
-  // (2) Nom de famille : minimum de 2 caractères
-  if (
-    !formDataObject.lastName.value ||
-    formDataObject.lastName.value.length < 2
-  ) {
-    formDataObject.lastName.parentElement.setAttribute(
-      "data-error",
-      "Veuillez entrer 2 caractères ou plus pour le champ du nom."
-    );
-    formDataObject.lastName.parentElement.dataset.errorVisible = "true";
-    formDataIsValid = false;
-  } else {
-    formDataObject.lastName.parentElement.dataset.errorVisible = "false";
-  }
+  formDataIsValid =
+    validateLastName(formDataObject.lastName) && formDataIsValid;
 
-  // (3) Adresse électronique : vérification de la validité
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailPattern.test(formDataObject.email.value)) {
-    formDataObject.email.parentElement.setAttribute(
-      "data-error",
-      "Vous devez saisir un email valide."
-    );
-    formDataObject.email.parentElement.dataset.errorVisible = "true";
-    formDataIsValid = false;
-  } else {
-    formDataObject.email.parentElement.dataset.errorVisible = "false";
-  }
+  formDataIsValid = validateEmail(formDataObject.email) && formDataIsValid;
 
-  // (4) Dates de naissance
-  if (!formDataObject.birthdate.value) {
-    formDataObject.birthdate.parentElement.setAttribute(
-      "data-error",
-      "Vous devez entrer votre date de naissance."
-    );
-    formDataObject.birthdate.parentElement.dataset.errorVisible = "true";
-    formDataIsValid = false;
-  } else {
-    formDataObject.birthdate.parentElement.dataset.errorVisible = "false";
-  }
+  formDataIsValid =
+    validateBirthdate(formDataObject.birthdate) && formDataIsValid;
 
-  // (5) Nombre de concours : doit être un nombre
-  if (
-    !formDataObject.quantity.value ||
-    formDataObject.quantity.value < 0 ||
-    isNaN(formDataObject.quantity.value)
-  ) {
-    formDataObject.quantity.parentElement.setAttribute(
-      "data-error",
-      "Vous devez saisir un nombre."
-    );
-    formDataObject.quantity.parentElement.dataset.errorVisible = "true";
-    formDataIsValid = false;
-  } else {
-    formDataObject.quantity.parentElement.dataset.errorVisible = "false";
-  }
+  formDataIsValid =
+    validateQuantity(formDataObject.quantity) && formDataIsValid;
 
-  // (6) Bouton radio sélectionné
-  const selectedLocation = Array.from(formDataObject.locations).some(
-    (location) => location.checked
-  );
-  if (!selectedLocation) {
-    formDataObject.location6.parentElement.setAttribute(
-      "data-error",
-      "Vous devez choisir une option."
-    );
-    formDataObject.location6.parentElement.dataset.errorVisible = "true";
-    formDataIsValid = false;
-  } else {
-    formDataObject.location6.parentElement.dataset.errorVisible = "false";
-  }
+  formDataIsValid =
+    validateLocation(formDataObject.locations, formDataObject.location6) &&
+    formDataIsValid;
 
-  // (7) Vérifier si la case des conditions générales est cochée
-  if (!formDataObject.termsAccepted.checked) {
-    formDataObject.termsAccepted.parentElement.setAttribute(
-      "data-error",
-      "Vous devez vérifier que vous acceptez les termes et conditions."
-    );
-    formDataObject.termsAccepted.parentElement.dataset.errorVisible = "true";
-    formDataIsValid = false;
-  } else {
-    formDataObject.termsAccepted.parentElement.dataset.errorVisible = "false";
-  }
+  formDataIsValid =
+    validateTermsAccepted(formDataObject.termsAccepted) && formDataIsValid;
 
   return formDataIsValid;
 };
@@ -156,11 +192,13 @@ const validate = () => {
 
 form.addEventListener("submit", function (e) {
   e.preventDefault();
-  console.log("Formulaire soumis");
   const isValid = validate();
   if (isValid) {
-    console.log("Le formulaire est conforme");
-  } else {
-    console.log("Le formulaire n'est pas conforme");
+    const formData = new FormData(this);
+    // Send formData to the serveur
+    console.log("valid");
+    form.reset();
+    // form.style.visibility = "hidden";
+    // closeModal();
   }
 });
