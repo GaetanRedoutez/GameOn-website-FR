@@ -99,6 +99,17 @@ const validateBirthdate = (birthdate) => {
   if (!birthdate.value) {
     setError(birthdate, "Vous devez entrer votre date de naissance.");
     return false;
+  }
+
+  const enteredYear = new Date(birthdate.value).getFullYear();
+  const currentYear = new Date().getFullYear();
+
+  if (enteredYear > currentYear) {
+    setError(
+      birthdate,
+      "L'année de naissance ne peut pas dépasser l'année actuelle."
+    );
+    return false;
   } else {
     clearError(birthdate);
     return true;
