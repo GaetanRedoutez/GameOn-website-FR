@@ -145,10 +145,7 @@ const validateLocation = (locations, location6) => {
 // (7) Validation de l'acceptation des conditions générales
 const validateTermsAccepted = (termsAccepted) => {
   if (!termsAccepted.checked) {
-    setError(
-      termsAccepted,
-      "Vous devez vérifier que vous acceptez les termes et conditions."
-    );
+    setError(termsAccepted, "Vous devez acceptez les termes et conditions.");
     return false;
   } else {
     clearError(termsAccepted);
