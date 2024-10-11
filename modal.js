@@ -11,8 +11,10 @@ function editNav() {
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const modalCloseBtn = document.querySelector(".close");
+const confirmCloseBtn = document.querySelector(".btn-confirm-close");
 const formData = document.querySelectorAll(".formData");
 const form = document.querySelector("form");
+const confirmBody = document.querySelector(".confirm-body");
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -21,16 +23,19 @@ modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 function launchModal() {
   form.style.display = "initial";
   modalbg.style.display = "block";
+  setAttributeToBirthdate();
 }
 
 // Close modal
 const closeModal = () => {
   modalbg.style.display = "none";
+  confirmBody.style.display = "none";
   removeAllErrors();
 };
 
 // Close modal event
 modalCloseBtn.addEventListener("click", closeModal);
+confirmCloseBtn.addEventListener("click", closeModal);
 
 // Fonction pour gérer l'affichage des erreurs
 const setError = (element, message) => {
@@ -52,6 +57,15 @@ const removeAllErrors = () => {
     element.removeAttribute("data-error");
     element.dataset.errorVisible = "false";
   });
+};
+
+// Set Attribute to birthdate
+const setAttributeToBirthdate = () => {
+  const birthdate = document.querySelector("#birthdate");
+  const currentYear = new Date().getFullYear();
+
+  birthdate.setAttribute("min", `${currentYear - 100}-01-01`);
+  birthdate.setAttribute("max", `${currentYear - 18}-01-01`);
 };
 
 // (1) Validation du prénom
@@ -98,18 +112,6 @@ const validateEmail = (email) => {
 const validateBirthdate = (birthdate) => {
   if (!birthdate.value) {
     setError(birthdate, "Vous devez entrer votre date de naissance.");
-    return false;
-  }
-
-  const enteredYear = new Date(birthdate.value).getFullYear();
-  const currentYear = new Date().getFullYear();
-
-  //TODO Changer ça en setAttribute 'max' pour type date
-  if (enteredYear > currentYear) {
-    setError(
-      birthdate,
-      "L'année de naissance ne peut pas dépasser l'année actuelle."
-    );
     return false;
   } else {
     clearError(birthdate);
@@ -203,10 +205,7 @@ form.addEventListener("submit", function (e) {
   const isValid = validate();
   if (isValid) {
     const formData = new FormData(this);
-    // Send formData to the serveur
-    console.log("valid");
-    form.reset();
-    // form.style.visibility = "hidden";
-    // closeModal();
+    form.style.display = "none";
+    confirmBody.style.display = "grid";
   }
 });
