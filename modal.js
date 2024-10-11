@@ -104,6 +104,7 @@ const validateBirthdate = (birthdate) => {
   const enteredYear = new Date(birthdate.value).getFullYear();
   const currentYear = new Date().getFullYear();
 
+  //TODO Changer ça en setAttribute 'max' pour type date
   if (enteredYear > currentYear) {
     setError(
       birthdate,
@@ -194,8 +195,7 @@ const validate = () => {
     wantsUpdates: document.querySelector("#checkbox2"),
   };
 
-  const isValid = validFormSubmit(formDataObject);
-  return isValid;
+  return validFormSubmit(formDataObject);
 };
 
 form.addEventListener("submit", function (e) {
