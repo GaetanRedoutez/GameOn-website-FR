@@ -468,7 +468,17 @@ footer {
   align-items: flex-end;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1110px) {
+  .header-logo img {
+    margin-left: 10px;
+    margin-top: 15px;
+    height: 20px;
+    object-fit: cover;
+  }
+  .topnav {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
   .topnav a {
     display: none;
   }
@@ -490,13 +500,15 @@ footer {
     display: block;
     text-align: left;
   }
-
-  .header-logo img {
-    margin-left: 10px;
-    height: 20px;
-    object-fit: cover;
+  .hero-headline {
+    font-size: 4.5rem;
   }
-
+}
+@media screen and (max-width: 768px) {
+  .topnav a {
+    display: none;
+    font-size: 16px;
+  }
   .hero-section {
     display: block;
     box-shadow: unset;
@@ -539,16 +551,16 @@ footer {
     text-align: center;
     font-size: 10px;
   }
-}
-
-@media screen and (max-width: 540px) {
-  .topnav a {
-    display: none;
+  .bground {
+    background-color: unset;
+    top: 70px;
   }
-  .topnav a.icon {
-    float: right;
-    display: block;
-    margin-top: -15px;
+  .content {
+    margin-top: unset;
+    margin-bottom: 60px;
+  }
+  .confirm-body {
+    height: calc(100vh - 70px);
   }
 }
 
