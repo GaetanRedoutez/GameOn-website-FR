@@ -557,6 +557,7 @@ footer {
   }
   .content {
     margin-top: unset;
+    height: 100%;
     margin-bottom: 60px;
   }
   .confirm-body {
