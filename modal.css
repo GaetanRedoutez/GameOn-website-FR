@@ -560,8 +560,8 @@ footer {
     height: 100%;
     margin-bottom: 60px;
   }
-  .confirm-body {
-    height: calc(100vh - 70px);
+  .confirm-message {
+    height: 90%;
   }
 }
 

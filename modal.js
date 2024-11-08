@@ -205,6 +205,7 @@ form.addEventListener("submit", function (e) {
   const isValid = validate();
   if (isValid) {
     const formData = new FormData(this);
+    form.reset();
     form.style.display = "none";
     confirmBody.style.display = "grid";
   }
